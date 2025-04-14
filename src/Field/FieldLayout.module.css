@@ -1,0 +1,43 @@
+.game-field-block {
+	width: 300px;
+	margin: 50px auto;
+	padding: 0;
+	border: none;
+}
+
+.list {
+	display: flex;
+	flex-wrap: wrap;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.list li {
+	width: 33.33%;
+	box-sizing: border-box;
+	border: 1px solid #333;
+}
+
+.buttons {
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	font-size: 30px;
+	font-weight: bold;
+	background: white;
+	border: none;
+	cursor: pointer;
+	transition: background 0.4s;
+	border-radius: 0;
+}
+
+.buttons:hover {
+	background: #eee;
+}
+
+.buttons:disabled {
+	color: #000;
+	background-color: white;
+	opacity: 1;
+	cursor: not-allowed;
+}
