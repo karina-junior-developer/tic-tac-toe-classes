@@ -1,16 +1,10 @@
 import styles from './InformationLayout.module.css';
 import PropTypes from 'prop-types';
 
-export const InformationLayout = ({
-	getGameResult,
-	getTurn,
-	isGameEnded,
-	xScore,
-	oScore,
-}) => {
+export const InformationLayout = ({ getGameMessage, xScore, oScore }) => {
 	return (
 		<div className={styles.information}>
-			<h2>{isGameEnded ? getGameResult() : getTurn()}</h2>
+			<h2>{getGameMessage()}</h2>
 			<div className={styles.x}>X score: {xScore}</div>
 			<div className={styles.o}>0 score: {oScore}</div>
 		</div>
@@ -18,7 +12,7 @@ export const InformationLayout = ({
 };
 
 InformationLayout.propTypes = {
-	getGameResult: PropTypes.func,
-	getTurn: PropTypes.func,
-	isGameEnded: PropTypes.bool,
+	getGameMessage: PropTypes.func,
+	xScore: PropTypes.number,
+	oScore: PropTypes.number,
 };
