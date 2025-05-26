@@ -1,7 +1,11 @@
 import styles from './FieldLayout.module.css';
 import PropTypes from 'prop-types';
+import { useStore } from '../useStore';
 
-export const FieldLayout = ({ field, onClick, isGameEnded }) => {
+export const FieldLayout = ({ onClick }) => {
+	const field = useStore((state) => state.field);
+	const isGameEnded = useStore((state) => state.isGameEnded);
+
 	return (
 		<div className={styles['game-field-block']}>
 			<ul className={styles.list}>
@@ -11,7 +15,7 @@ export const FieldLayout = ({ field, onClick, isGameEnded }) => {
 							<button
 								className={styles.buttons}
 								onClick={() => onClick(index)}
-								disabled={isGameEnded && field.includes('')}
+								disabled={isGameEnded}
 							>
 								{symbol}
 							</button>
@@ -24,7 +28,5 @@ export const FieldLayout = ({ field, onClick, isGameEnded }) => {
 };
 
 FieldLayout.propTypes = {
-	field: PropTypes.arrayOf(PropTypes.string),
 	onClick: PropTypes.func,
-	isGameEnded: PropTypes.bool,
 };

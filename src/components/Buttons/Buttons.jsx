@@ -1,19 +1,21 @@
 import styles from './Buttons.module.css';
-import PropTypes from 'prop-types';
+import { store } from '../store';
 
-export const Buttons = ({ resetState }) => {
+export const Buttons = () => {
 	return (
 		<div>
-			<button className={styles.button} onClick={() => resetState(false)}>
+			<button
+				className={styles.button}
+				onClick={() => store.dispatch({ type: 'PLAY AGAIN' })}
+			>
 				Play again
 			</button>
-			<button className={styles.button} onClick={() => resetState(true)}>
+			<button
+				className={styles.button}
+				onClick={() => store.dispatch({ type: 'RESET SCORE' })}
+			>
 				Reset score
 			</button>
 		</div>
 	);
-};
-
-Buttons.propTypes = {
-	resetState: PropTypes.func,
 };

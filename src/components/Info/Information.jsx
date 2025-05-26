@@ -1,36 +1,35 @@
 import { InformationLayout } from './InformationLayout';
-import PropTypes from 'prop-types';
 import { WIN_PATTERNS } from '../constants';
 import { useCallback, useEffect } from 'react';
+import { store } from '../store';
+import { useStore } from '../useStore';
 
-export const Information = ({
-	gameState: { field, isGameEnded, winner, xScore, oScore, isDraw, currentPlayer },
-	setGameState,
-}) => {
+export const Information = () => {
+	const field = useStore((state) => state.field);
+	const isGameEnded = useStore((state) => state.isGameEnded);
+	const winner = useStore((state) => state.winner);
+	const isDraw = useStore((state) => state.isDraw);
+	const currentPlayer = useStore((state) => state.currentPlayer);
+
 	const checkWinner = useCallback(() => {
 		for (let pattern of WIN_PATTERNS) {
 			const [a, b, c] = pattern;
 			if (field[a] !== '' && field[a] === field[b] && field[a] === field[c]) {
 				if (!isGameEnded) {
-					setGameState((prev) => ({
-						...prev,
-						isGameEnded: true,
-						isDraw: false,
-						winner: field[a],
-					}));
+					store.dispatch({ type: 'SET GAME ENDED', payload: { index: a } });
 
 					field[a] === 'X'
-						? setGameState((prev) => ({ ...prev, xScore: prev.xScore + 1 }))
-						: setGameState((prev) => ({ ...prev, oScore: prev.oScore + 1 }));
+						? store.dispatch({ type: 'SET X WINNER' })
+						: store.dispatch({ type: 'SET O WINNER' });
 				}
 				return;
 			}
 		}
 
 		if (!field.includes('') && winner === '' && !isGameEnded) {
-			setGameState((prev) => ({ ...prev, isGameEnded: true, isDraw: true }));
+			store.dispatch({ type: 'SET DRAW' });
 		}
-	}, [field, isGameEnded, setGameState, winner]);
+	}, [field, isGameEnded, winner]);
 
 	useEffect(() => {
 		checkWinner();
@@ -49,24 +48,5 @@ export const Information = ({
 		}
 	};
 
-	return (
-		<InformationLayout
-			getGameMessage={getGameMessage}
-			xScore={xScore}
-			oScore={oScore}
-		/>
-	);
-};
-
-Information.propTypes = {
-	gameState: PropTypes.shape({
-		currentPlayer: PropTypes.string,
-		isGameEnded: PropTypes.bool,
-		isDraw: PropTypes.bool,
-		field: PropTypes.array,
-		winner: PropTypes.string,
-		xScore: PropTypes.number,
-		oScore: PropTypes.number,
-	}),
-	setGameState: PropTypes.func,
+	return <InformationLayout getGameMessage={getGameMessage} />;
 };

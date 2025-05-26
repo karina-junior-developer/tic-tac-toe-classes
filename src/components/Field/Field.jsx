@@ -1,35 +1,16 @@
 import { FieldLayout } from './FieldLayout';
-import PropTypes from 'prop-types';
+import { store } from '../store';
+import { useStore } from '../useStore';
 
-export const Field = ({
-	gameState: { field, currentPlayer, isGameEnded },
-	setGameState,
-}) => {
+export const Field = () => {
+	const field = useStore((state) => state.field);
+
 	const onClick = (i) => {
 		if (field[i] !== '') {
 			return alert('This cell is already fulfilled. Please choose another cell.');
 		}
 
-		let updatedField = [...field];
-		updatedField[i] = currentPlayer;
-		setGameState((prev) => ({
-			...prev,
-			field: updatedField,
-			currentPlayer: currentPlayer === 'X' ? '0' : 'X',
-		}));
+		store.dispatch({ type: 'MAKE MOVE', payload: { index: i } });
 	};
-	return <FieldLayout field={field} onClick={onClick} isGameEnded={isGameEnded} />;
-};
-
-Field.propTypes = {
-	gameState: PropTypes.shape({
-		currentPlayer: PropTypes.string,
-		isGameEnded: PropTypes.bool,
-		isDraw: PropTypes.bool,
-		field: PropTypes.array,
-		winner: PropTypes.string,
-		xScore: PropTypes.number,
-		oScore: PropTypes.number,
-	}),
-	setGameState: PropTypes.func,
+	return <FieldLayout onClick={onClick} />;
 };
