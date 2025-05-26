@@ -1,5 +1,5 @@
-import { Field } from '../Field/Field.jsx';
-import { Information } from '../Info/Information.jsx';
+import { Buttons, Field, Information } from '../game.js';
+
 import { GameLayout } from './GameLayout.jsx';
 import { useState } from 'react';
 import { INITIAL_GAME_STATE } from '../constants.js';
@@ -20,9 +20,8 @@ export const Game = () => {
 			<GameLayout>
 				<Information gameState={gameState} setGameState={setGameState} />
 				<Field gameState={gameState} setGameState={setGameState} />
+				<Buttons resetState={resetState} />
 			</GameLayout>
-			<button onClick={() => resetState(false)}>Play again</button>
-			<button onClick={() => resetState(true)}>Reset score</button>
 		</>
 	);
 };

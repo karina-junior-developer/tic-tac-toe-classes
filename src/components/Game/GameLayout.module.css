@@ -8,21 +8,3 @@
 	align-items: center;
 	justify-content: center;
 }
-
-button {
-	padding: 7px 12px;
-	width: 250px;
-	cursor: pointer;
-	background-color: rgb(213, 219, 224);
-	border: none;
-	border-radius: 8px;
-	font-family: serif;
-	font-size: 17px;
-	font-weight: bold;
-	transition: background 0.4s;
-	margin-right: 10px;
-}
-
-button:hover {
-	background: #95b2e4;
-}
