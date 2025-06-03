@@ -14,10 +14,7 @@ export const gameReducer = (state = initialState, action) => {
 	const { type, payload = {} } = action;
 	const { index } = payload;
 	switch (type) {
-		case 'SET GAME DATA': {
-			return payload;
-		}
-		case 'SET X WINNER': {
+		case 'SET_X_WINNER': {
 			return {
 				...state,
 				isGameEnded: true,
@@ -26,7 +23,7 @@ export const gameReducer = (state = initialState, action) => {
 				xScore: state.xScore + 1,
 			};
 		}
-		case 'SET O WINNER': {
+		case 'SET_O_WINNER': {
 			return {
 				...state,
 				isGameEnded: true,
@@ -35,7 +32,7 @@ export const gameReducer = (state = initialState, action) => {
 				oScore: state.oScore + 1,
 			};
 		}
-		case 'SET GAME ENDED': {
+		case 'SET_GAME_ENDED': {
 			return {
 				...state,
 				isGameEnded: true,
@@ -43,14 +40,14 @@ export const gameReducer = (state = initialState, action) => {
 				winner: state.field[index],
 			};
 		}
-		case 'SET DRAW': {
+		case 'SET_DRAW': {
 			return {
 				...state,
 				isGameEnded: true,
 				isDraw: true,
 			};
 		}
-		case 'MAKE MOVE': {
+		case 'MAKE_MOVE': {
 			if (state.field[index] !== '' || state.isGameEnded) {
 				return state;
 			}
@@ -64,14 +61,14 @@ export const gameReducer = (state = initialState, action) => {
 				currentPlayer: state.currentPlayer === 'X' ? 'O' : 'X',
 			};
 		}
-		case 'PLAY AGAIN': {
+		case 'PLAY_AGAIN': {
 			return {
 				...initialState,
 				xScore: state.xScore,
 				oScore: state.oScore,
 			};
 		}
-		case 'RESET SCORE': {
+		case 'RESET_SCORE': {
 			return {
 				...initialState,
 			};

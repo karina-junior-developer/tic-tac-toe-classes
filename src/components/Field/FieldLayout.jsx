@@ -1,10 +1,11 @@
 import styles from './FieldLayout.module.css';
 import PropTypes from 'prop-types';
-import { useStore } from '../useStore';
+import { selectField, selectIsGameEnded } from '../../selectors';
+import { useSelector } from 'react-redux';
 
 export const FieldLayout = ({ onClick }) => {
-	const field = useStore((state) => state.field);
-	const isGameEnded = useStore((state) => state.isGameEnded);
+	const field = useSelector(selectField);
+	const isGameEnded = useSelector(selectIsGameEnded);
 
 	return (
 		<div className={styles['game-field-block']}>

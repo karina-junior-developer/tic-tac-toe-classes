@@ -1,4 +1,4 @@
-import { Buttons, Field, Information } from '../game.js';
+import { Buttons, Field, Information } from '../index.js';
 import { GameLayout } from './GameLayout.jsx';
 
 export const Game = () => {

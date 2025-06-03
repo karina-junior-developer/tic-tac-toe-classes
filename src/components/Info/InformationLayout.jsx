@@ -1,10 +1,11 @@
 import styles from './InformationLayout.module.css';
 import PropTypes from 'prop-types';
-import { useStore } from '../useStore';
+import { useSelector } from 'react-redux';
+import { selectXscore, selectOscore } from '../../selectors';
 
 export const InformationLayout = ({ getGameMessage }) => {
-	const xScore = useStore((state) => state.xScore);
-	const oScore = useStore((state) => state.oScore);
+	const xScore = useSelector(selectXscore);
+	const oScore = useSelector(selectOscore);
 
 	return (
 		<div className={styles.information}>

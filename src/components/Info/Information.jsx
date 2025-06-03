@@ -1,35 +1,41 @@
 import { InformationLayout } from './InformationLayout';
-import { WIN_PATTERNS } from '../constants';
+import { WIN_PATTERNS } from '../../constants/constants';
 import { useCallback, useEffect } from 'react';
-import { store } from '../store';
-import { useStore } from '../useStore';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_X_WINNER, SET_O_WINNER, SET_DRAW, setGameEnded } from '../../actions';
+import {
+	selectField,
+	selectIsGameEnded,
+	selectWinner,
+	selectIsDraw,
+	selectCurrentPlayer,
+} from '../../selectors';
 
 export const Information = () => {
-	const field = useStore((state) => state.field);
-	const isGameEnded = useStore((state) => state.isGameEnded);
-	const winner = useStore((state) => state.winner);
-	const isDraw = useStore((state) => state.isDraw);
-	const currentPlayer = useStore((state) => state.currentPlayer);
+	const dispatch = useDispatch();
+	const field = useSelector(selectField);
+	const isGameEnded = useSelector(selectIsGameEnded);
+	const winner = useSelector(selectWinner);
+	const isDraw = useSelector(selectIsDraw);
+	const currentPlayer = useSelector(selectCurrentPlayer);
 
 	const checkWinner = useCallback(() => {
 		for (let pattern of WIN_PATTERNS) {
 			const [a, b, c] = pattern;
 			if (field[a] !== '' && field[a] === field[b] && field[a] === field[c]) {
 				if (!isGameEnded) {
-					store.dispatch({ type: 'SET GAME ENDED', payload: { index: a } });
+					dispatch(setGameEnded(a));
 
-					field[a] === 'X'
-						? store.dispatch({ type: 'SET X WINNER' })
-						: store.dispatch({ type: 'SET O WINNER' });
+					field[a] === 'X' ? dispatch(SET_X_WINNER) : dispatch(SET_O_WINNER);
 				}
 				return;
 			}
 		}
 
 		if (!field.includes('') && winner === '' && !isGameEnded) {
-			store.dispatch({ type: 'SET DRAW' });
+			dispatch(SET_DRAW);
 		}
-	}, [field, isGameEnded, winner]);
+	}, [field, isGameEnded, winner, dispatch]);
 
 	useEffect(() => {
 		checkWinner();
