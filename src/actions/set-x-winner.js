@@ -1,3 +1,3 @@
-export const SET_X_WINNER = {
+export const setXWinner = () => ({
 	type: 'SET_X_WINNER',
-};
+});

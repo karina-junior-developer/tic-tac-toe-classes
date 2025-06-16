@@ -1,3 +1,36 @@
+@import 'tailwindcss';
+@tailwind utilities;
+
+@layer components {
+	.bottom-button {
+		@apply px-2 py-2 w-[140px] bg-[#d5dbe0] rounded-md font-serif text-[14px] font-bold transition-colors hover:bg-[#95b2e4];
+	}
+
+	.buttons-wrapper {
+		@apply flex justify-center gap-4 mt-8;
+	}
+	.field-wrapper {
+		@apply w-[300px] mx-auto mt-12 p-0 border-none;
+	}
+
+	.field-list {
+		@apply flex flex-wrap list-none p-0 m-0;
+	}
+
+	.field-cell {
+		@apply w-[33.33%] box-border border border-black bg-white;
+	}
+
+	.field-button {
+		@apply w-full aspect-square text-[30px] font-bold bg-white border-none cursor-pointer
+      transition-colors duration-400 hover:bg-[#eee]
+      disabled:text-black disabled:bg-white disabled:opacity-100 disabled:cursor-not-allowed;
+	}
+	.game-layout {
+		@apply mt-5 text-center bg-[#b0c4de] flex h-[80vh] flex-col items-center justify-center;
+	}
+}
+
 body {
 	margin: 0;
 	font-family: serif;

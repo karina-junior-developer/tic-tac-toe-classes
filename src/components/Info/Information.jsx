@@ -1,58 +1,62 @@
+import { connect } from 'react-redux';
 import { InformationLayout } from './InformationLayout';
 import { WIN_PATTERNS } from '../../constants/constants';
-import { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { SET_X_WINNER, SET_O_WINNER, SET_DRAW, setGameEnded } from '../../actions';
-import {
-	selectField,
-	selectIsGameEnded,
-	selectWinner,
-	selectIsDraw,
-	selectCurrentPlayer,
-} from '../../selectors';
+import { Component } from 'react';
 
-export const Information = () => {
-	const dispatch = useDispatch();
-	const field = useSelector(selectField);
-	const isGameEnded = useSelector(selectIsGameEnded);
-	const winner = useSelector(selectWinner);
-	const isDraw = useSelector(selectIsDraw);
-	const currentPlayer = useSelector(selectCurrentPlayer);
+import { setDraw, setGameEnded } from '../../actions';
 
-	const checkWinner = useCallback(() => {
+class MainInformation extends Component {
+	componentDidUpdate(prevProps) {
+		const { field, isGameEnded, winner } = this.props;
+
+		const fieldChanged = field !== prevProps.field;
+		const gameNotEnded = !isGameEnded && winner === '';
+
+		if (fieldChanged && gameNotEnded) {
+			this.checkWinner();
+		}
+	}
+
+	checkWinner = () => {
+		const { field, isGameEnded, winner, dispatch } = this.props;
+
 		for (let pattern of WIN_PATTERNS) {
 			const [a, b, c] = pattern;
 			if (field[a] !== '' && field[a] === field[b] && field[a] === field[c]) {
 				if (!isGameEnded) {
 					dispatch(setGameEnded(a));
-
-					field[a] === 'X' ? dispatch(SET_X_WINNER) : dispatch(SET_O_WINNER);
 				}
 				return;
 			}
 		}
 
-		if (!field.includes('') && winner === '' && !isGameEnded) {
-			dispatch(SET_DRAW);
-		}
-	}, [field, isGameEnded, winner, dispatch]);
-
-	useEffect(() => {
-		checkWinner();
-	}, [checkWinner]);
-
-	const getGameMessage = () => {
-		if (isGameEnded) {
-			if (isDraw) {
-				return 'It is a Tie!';
-			}
-			if (winner) {
-				return `Game ended. The winner is ${winner}`;
-			}
-		} else {
-			return `Now is ${currentPlayer}'s turn`;
+		const boardFull = field.every((cell) => cell !== '');
+		if (boardFull && winner === '' && !isGameEnded) {
+			dispatch(setDraw());
 		}
 	};
 
-	return <InformationLayout getGameMessage={getGameMessage} />;
-};
+	getGameMessage = () => {
+		const { isGameEnded, isDraw, winner, currentPlayer } = this.props;
+
+		if (isGameEnded) {
+			if (isDraw) return 'It is a Tie!';
+			if (winner) return `Game ended. The winner is ${winner}`;
+		}
+		return `Now is ${currentPlayer}'s turn`;
+	};
+
+	render() {
+		return <InformationLayout gameMessage={this.getGameMessage()} />;
+	}
+}
+
+const mapStateToProps = (state) => ({
+	field: state.field,
+	isGameEnded: state.isGameEnded,
+	winner: state.winner,
+	isDraw: state.isDraw,
+	currentPlayer: state.currentPlayer,
+});
+
+export const Information = connect(mapStateToProps)(MainInformation);

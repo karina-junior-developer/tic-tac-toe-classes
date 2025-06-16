@@ -1,3 +1,3 @@
-export const RESET_SCORE = {
+export const resetScore = () => ({
 	type: 'RESET_SCORE',
-};
+});

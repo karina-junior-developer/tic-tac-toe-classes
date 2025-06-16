@@ -1,14 +1,4 @@
-const FIELD_ARRAY = ['', '', '', '', '', '', '', '', ''];
-
-export const INITIAL_GAME_STATE = {
-	currentPlayer: 'X',
-	isGameEnded: false,
-	isDraw: false,
-	field: FIELD_ARRAY,
-	winner: '',
-	xScore: 0,
-	oScore: 0,
-};
+export const FIELD_ARRAY = ['', '', '', '', '', '', '', '', ''];
 
 export const WIN_PATTERNS = [
 	[0, 1, 2],

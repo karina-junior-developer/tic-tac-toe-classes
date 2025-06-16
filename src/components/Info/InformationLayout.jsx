@@ -1,21 +1,31 @@
-import styles from './InformationLayout.module.css';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { selectXscore, selectOscore } from '../../selectors';
+import { Component } from 'react';
 
-export const InformationLayout = ({ getGameMessage }) => {
-	const xScore = useSelector(selectXscore);
-	const oScore = useSelector(selectOscore);
+class MainInformationLayout extends Component {
+	render() {
+		const { xScore, oScore } = this.props;
 
-	return (
-		<div className={styles.information}>
-			<h2>{getGameMessage()}</h2>
-			<div className={styles.x}>X score: {xScore}</div>
-			<div className={styles.o}>0 score: {oScore}</div>
-		</div>
-	);
+		return (
+			<div className="mt-5 text-center">
+				<h2 className="mb-1 text-xl font-semibold">{this.props.gameMessage}</h2>
+				<div className="mt-2 text-lg">X score: {xScore}</div>
+				<div className="text-lg">O score: {oScore}</div>
+			</div>
+		);
+	}
+}
+
+MainInformationLayout.propTypes = {
+	getGameMessage: PropTypes.string,
+	xScore: PropTypes.number,
+	oScore: PropTypes.number,
 };
 
-InformationLayout.propTypes = {
-	getGameMessage: PropTypes.func,
-};
+const mapStateToProps = (state) => ({
+	xScore: selectXscore(state),
+	oScore: selectOscore(state),
+});
+
+export const InformationLayout = connect(mapStateToProps)(MainInformationLayout);

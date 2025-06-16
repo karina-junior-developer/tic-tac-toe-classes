@@ -1,10 +1,12 @@
-import styles from './GameLayout.module.css';
 import PropTypes from 'prop-types';
+import { Component } from 'react';
 
-export const GameLayout = ({ children }) => {
-	return <div className={styles['game-layout']}>{children}</div>;
-};
+export class GameLayout extends Component {
+	render() {
+		return <div className="game-layout">{this.props.children}</div>;
+	}
+}
 
 GameLayout.propTypes = {
-	children: PropTypes.arrayOf(PropTypes.element),
+	children: PropTypes.node,
 };

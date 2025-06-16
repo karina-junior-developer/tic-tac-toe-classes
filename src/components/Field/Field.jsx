@@ -1,18 +1,46 @@
 import { FieldLayout } from './FieldLayout';
-import { useDispatch, useSelector } from 'react-redux';
+import { Component } from 'react';
+import { connect } from 'react-redux';
 import { makeMove } from '../../actions';
 import { selectField } from '../../selectors';
+import PropTypes from 'prop-types';
 
-export const Field = () => {
-	const dispatch = useDispatch();
-	const field = useSelector(selectField);
-
-	const onClick = (i) => {
-		if (field[i] !== '') {
-			return alert('This cell is already fulfilled. Please choose another cell.');
+class MainFieldLayout extends Component {
+	handleClick = (index) => {
+		if (!this.props.isGameEnded && this.props.field[index] === '') {
+			this.props.makeMove(index);
 		}
-
-		dispatch(makeMove(i));
 	};
-	return <FieldLayout onClick={onClick} />;
+
+	render() {
+		return (
+			<div className="grid grid-cols-3 gap-1 w-[300px]">
+				{this.props.field.map((cell, index) => (
+					<button
+						key={index}
+						className="w-full aspect-square text-2xl font-bold bg-white border border-black hover:bg-gray-200"
+						disabled={this.props.isGameEnded || cell !== ''}
+						onClick={() => this.handleClick(index)}
+					>
+						{cell}
+					</button>
+				))}
+			</div>
+		);
+	}
+}
+
+const mapStateToProps = (state) => ({
+	field: selectField(state),
+});
+
+const mapDispatchToProps = {
+	makeMove,
+};
+
+export const Field = connect(mapStateToProps, mapDispatchToProps)(MainFieldLayout);
+
+MainFieldLayout.propTypes = {
+	makeMove: PropTypes.func,
+	field: PropTypes.array,
 };

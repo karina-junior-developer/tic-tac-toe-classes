@@ -1,3 +1,3 @@
-export const PLAY_AGAIN = {
+export const playAgain = () => ({
 	type: 'PLAY_AGAIN',
-};
+});

@@ -1,33 +1,41 @@
-import styles from './FieldLayout.module.css';
 import PropTypes from 'prop-types';
 import { selectField, selectIsGameEnded } from '../../selectors';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
+import { Component } from 'react';
 
-export const FieldLayout = ({ onClick }) => {
-	const field = useSelector(selectField);
-	const isGameEnded = useSelector(selectIsGameEnded);
+class MainFieldLayout extends Component {
+	render() {
+		const { field, isGameEnded, onClick } = this.props;
 
-	return (
-		<div className={styles['game-field-block']}>
-			<ul className={styles.list}>
-				{field.map((symbol, index) => {
-					return (
-						<li key={index}>
+		return (
+			<div className="field-wrapper">
+				<ul className="field-list">
+					{field.map((symbol, index) => (
+						<li key={index} className="field-cell">
 							<button
-								className={styles.buttons}
+								className="field-button"
 								onClick={() => onClick(index)}
 								disabled={isGameEnded}
 							>
 								{symbol}
 							</button>
 						</li>
-					);
-				})}
-			</ul>
-		</div>
-	);
-};
+					))}
+				</ul>
+			</div>
+		);
+	}
+}
 
-FieldLayout.propTypes = {
+const mapStateToProps = (state) => ({
+	field: selectField(state),
+	isGameEnded: selectIsGameEnded(state),
+});
+
+export const FieldLayout = connect(mapStateToProps)(MainFieldLayout);
+
+MainFieldLayout.propTypes = {
+	field: PropTypes.array,
+	isGameEnded: PropTypes.bool,
 	onClick: PropTypes.func,
 };

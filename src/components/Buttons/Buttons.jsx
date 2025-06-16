@@ -1,17 +1,32 @@
-import styles from './Buttons.module.css';
-import { useDispatch } from 'react-redux';
-import { RESET_SCORE, PLAY_AGAIN } from '../../actions';
+import { connect } from 'react-redux';
+import { Component } from 'react';
+import { resetScore, playAgain } from '../../actions';
+import PropTypes from 'prop-types';
 
-export const Buttons = () => {
-	const dispatch = useDispatch();
-	return (
-		<div>
-			<button className={styles.button} onClick={() => dispatch(PLAY_AGAIN)}>
-				Play again
-			</button>
-			<button className={styles.button} onClick={() => dispatch(RESET_SCORE)}>
-				Reset score
-			</button>
-		</div>
-	);
+class ButtonsLayout extends Component {
+	render() {
+		const { resetScore, playAgain } = this.props;
+		return (
+			<div className="buttons-wrapper">
+				<button className="bottom-button" onClick={playAgain}>
+					Play again
+				</button>
+				<button className="bottom-button" onClick={resetScore}>
+					Reset score
+				</button>
+			</div>
+		);
+	}
+}
+
+const mapDispatchToProps = {
+	resetScore,
+	playAgain,
+};
+
+export const Buttons = connect(null, mapDispatchToProps)(ButtonsLayout);
+
+ButtonsLayout.propTypes = {
+	resetScore: PropTypes.func,
+	playAgain: PropTypes.func,
 };
